@@ -5,10 +5,11 @@
 		@foreach($streams as $stream)
 			<li class="item">
 				<h2>Name: {{ $stream->name }}</h2>
-				<p><strong>Key: {{ $stream->key }}</strong></p>
-				<p>Description: {{ $stream->description }}</p>
-				<p>RTMP: rtmp://{{ request()->server->get('SERVER_NAME') }}/live/</p>
-				<p>RTMP Stream Key: {{ $stream->name }}?key={{ $stream->key }}</p>
+				<p>Title: {{ $stream->title }}</p>
+				<p>Byline: {{ $stream->byline }}</p>
+				<p>RTMP Server: rtmp://{{ request()->server->get('SERVER_NAME') }}/live/</p>
+				<p>RTMP Stream Key: {{ $stream->slug }}?key={{ $stream->key }}</p>
+				<p>Player: <a href="/player/{{ $stream->slug }}">https://{{ request()->server->get('SERVER_NAME') }}/player/{{ $stream->slug }}</a></p>
 				<p><a href="/stream/{{ $stream->id }}/edit">Edit</a> | <a class="delete" data-name="{{ $stream->name }}" href="/stream/{{ $stream->id }}/delete">Delete</a></p>
 			</li>
 		@endforeach

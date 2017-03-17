@@ -34,7 +34,7 @@ Route::get('/player/{streamName}', 'PlayerController@player');
 Route::get('/auth', 'StreamController@auth');
 Route::any('/stream/create', 'StreamController@create');
 Route::get('/stream/{id}/delete', 'StreamController@delete');
-Route::get('/stream/{id}/edit', 'StreamController@edit');
+Route::any('/stream/{id}/edit', 'StreamController@edit');
 Route::get('/stream/ping/{streamName}/{playbackToken}/{playbackTime}/finished', 'PlayerController@updateTrackerFinished');
 Route::get('/stream/ping/{streamName}/{playbackToken}/{playbackTime}', 'PlayerController@updateTrackerPlayback');
 Route::get('/stream/{streamName}/{playbackToken}', 'PlayerController@tracker');

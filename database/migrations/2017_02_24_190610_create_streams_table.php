@@ -16,8 +16,10 @@ class CreateStreamsTable extends Migration
         Schema::create('streams', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('description');
-            $table->string('key')->unique()->nullable();
+            $table->string('slug')->unique();
+            $table->string('title');
+            $table->string('byline');
+            $table->string('key');
             $table->timestamps();
         });
     }

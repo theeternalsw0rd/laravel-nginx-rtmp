@@ -18,7 +18,7 @@
 		</div>
 		<div>
 			<label for="description">Description</label>
-			<textarea name="description">{{ old('name') }}</textarea>
+			<textarea name="description">{{ old('description') }}</textarea>
 		</div>
 		<div>
 			<input type="submit" />

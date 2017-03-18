@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        \SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Facebook' => \SammyK\LaravelFacebookSdk\FacebookFacade::class,
     ],
 
 ];

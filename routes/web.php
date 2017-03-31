@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Auth::routes();
 function isUserAgent($type) {
         return stripos($_SERVER['HTTP_USER_AGENT'],$type);

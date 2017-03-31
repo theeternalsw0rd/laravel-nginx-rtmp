@@ -17,6 +17,15 @@
 			<label for="name">Name</label>
 			<input type="text" name="name" value="{{ old('name') }}" />
 		</div>
+		<div><em>These are generated using Facebook's Developer Graph Explorer tool and are for streaming to Facebook Live</em></div>
+		<div>
+			<label for="fbPageID">Facebook Page ID</label>
+			<input type="text" name="fbPageID" value="{{ old('fbPageID') }}" />
+		</div>
+		<div>
+			<label for="fbPageToken">Facebook Page Token</label>
+			<input type="text" name="fbPageToken" value="{{ old('fbPageToken') }}" />
+		</div>
 		<div><em>These next items should be updated each session.</em></div>
 		<div>
 			<label for="title">Title</label>

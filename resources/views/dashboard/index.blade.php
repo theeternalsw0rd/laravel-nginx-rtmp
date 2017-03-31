@@ -5,8 +5,19 @@
 		@foreach($streams as $stream)
 			<li class="item">
 				<h2>Name: {{ $stream->name }}</h2>
-				<p>Title: {{ $stream->title }}</p>
-				<p>Byline: {{ $stream->byline }}</p>
+				@if(empty($stream->title))
+					<p>Title: Placeholder Title</p>
+				@else
+					<p>Title: {{ $stream->title }}</p>
+				@endif
+				@if(empty($stream->byline))
+					<p>Byline: Placeholder byline</p>
+				@else
+					<p>Byline: {{ $stream->byline }}</p>
+				@endif
+				@if(!empty($stream->fbPageTitle))
+					<p>Facebook Page to Stream to: {{ $stream->fbPageTitle }}</p>
+				@endif
 				<p>RTMP Server: rtmp://{{ request()->server->get('SERVER_NAME') }}/live/</p>
 				<p>RTMP Stream Key: {{ $stream->slug }}?key={{ $stream->key }}</p>
 				<p>Player: <a href="/player/{{ $stream->slug }}">https://{{ request()->server->get('SERVER_NAME') }}/player/{{ $stream->slug }}</a></p>

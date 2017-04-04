@@ -18,10 +18,10 @@ class CreateStreamsTable extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->string('title');
-            $table->string('byline');
+            $table->longText('description');
             $table->string('key');
             $table->string('fbPageID');
-            $table->string('fbPageToken');
+            $table->longText('fbPageToken');
             $table->string('fbStreamURL');
             $table->timestamps();
         });

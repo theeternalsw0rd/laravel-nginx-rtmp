@@ -56,16 +56,16 @@ class StreamController extends BaseController
             $fbPageID = $request->input('fbPageID');
             $fbPageToken = $request->input('fbPageToken');
             $title = $request->input('title');
-            $byline = $request->input('byline');
+            $description = $request->input('description');
             $key = sha1(time() . $slug);
             $stream = new Stream();
             $stream->name = $name;
             $stream->slug = $slug;
-            $stream->fbPageID = is_null($fbPageID) ? '' : $fbPageID;
-            $stream->fbPageToken = is_null($fbPageToken) ? '' : $fbPageToken;
+            $stream->fbPageID = $fbPageID;
+            $stream->fbPageToken = $fbPageToken;
             $stream->fbStreamURL = '';
             $stream->title = $title;
-            $stream->byline = $byline;
+            $stream->description = $description;
             $stream->key = $key;
             if($stream->save())
             {
@@ -88,29 +88,19 @@ class StreamController extends BaseController
         {
             $name = $request->input('name');
             $slug = str_slug($name);
+            $stream = Stream::findOrFail($id);
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255|unique:streams,id,' . $id
             ]);
-            $validator->after(function($validator) use($slug, $id)
+            $validator->after(function($validator) use($name, $stream, $slug, $id)
             {
-                if(count($validator->errors()) > 0)
-                {
-                    foreach($validator->errors()->messages() as $field => $errors)
-                    {
-                        if($field == 'name')
-                        {
-                            return;
-                        }
-                    }
-                }
                 $streams = Stream::where('slug', '=', $slug)->get();
                 if($streams->count() > 0)
                 {
-                    if($streams->first()->id == $id)
+                    if($streams->first()->id != $id)
                     {
-                        return;
+                        $validator->errors()->add('slug', 'The name you have provided may have unique punctuation, but the url slug is already in use.');
                     }
-                    $validator->errors()->add('slug', 'The name you have provided may have unique punctuation, but the url slug is already in use.');
                 }
             });
             if($validator->fails())
@@ -120,21 +110,50 @@ class StreamController extends BaseController
             $fbPageID = $request->input('fbPageID');
             $fbPageToken = $request->input('fbPageToken');
             $title = $request->input('title');
-            $byline = $request->input('byline');
-            $stream = Stream::findOrFail($id);
+            $description = $request->input('description');
+            if(!empty($stream->fbStreamURL)) {
+                if($fbPageID !== $stream->fbPageID || $fbPageToken !== $stream->fbPageToken)
+                {
+                    return redirect()->back()->withErrors(['fbookErr', 'You changed Facebook integration with a running stream. Please stop the existing stream first.'])->withInput();
+                }
+            }
             $stream->name = $name;
             $stream->slug = $slug;
-            $stream->fbPageID = is_null($fbPageID) ? '' : $fbPageID;
-            $stream->fbPageToken = is_null($fbPageToken) ? '' : $fbPageToken;
+            $stream->fbPageID = $fbPageID;
+            $stream->fbPageToken = $fbPageToken;
+            $originalTitle = $stream->title;
+            $originalDescription = $stream->description;
             $stream->title = $title;
-            $stream->byline = $byline;
+            $stream->description = $description;
             if($stream->save())
             {
+                if(!empty($stream->fbStreamURL) && ($originalTitle != $title || $originalDescription != $description))
+                {
+                    $fb = app(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk::class);
+                    $fb->setDefaultAccessToken($fbPageToken);
+                    $videoID = preg_replace('%.*/([^?]*).*%', '${1}', $stream->fbStreamURL);
+                    $streamData = [
+                        'title' => $title,
+                        'description' => $title . ': ' . $description
+                    ];
+                    try
+                    {
+                        $response = $fb->post('/' . $videoID, $streamData);
+                    }
+                    catch(\Facebook\Exceptions\FacebookResponseException $e)
+                    {
+                        return redirect('/')->withErrors(['err' => 'Could not update Facebook Live title or description. You will need to manually update it through Facebook.']);
+                    }
+                    catch(\Facebook\Exceptions\FacebookSDKException $e)
+                    {
+                        return redirect('/')->withErrors(['err' => 'Could not update Facebook Live title or description. You will need to manually update it through Facebook.']);
+                    }
+                }
                 return redirect('/');
             }
             else
             {
-                return redirect()->back();
+                return redirect()->back()->withErrors(['err' => 'Could not save updates due to a server-side issue.']);
             }
         }
         if($request->isMethod('get'))
@@ -146,7 +165,7 @@ class StreamController extends BaseController
                 'streamTitle' => $stream->title,
                 'fbPageID' => $stream->fbPageID,
                 'fbPageToken' => $stream->fbPageToken,
-                'byline' => $stream->byline
+                'description' => $stream->description
             ]);
         }
 

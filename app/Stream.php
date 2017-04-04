@@ -15,18 +15,22 @@ class Stream extends Model
 
     public function setTitleAttribute($value)
     {
-        if(is_null($value))
-        {
-            $this->attributes['title'] = '';
-        }
+        $this->attributes['title'] = is_null($value) ? '' : $value;
     }
 
-    public function setBylineAttribute($value)
+    public function setDescriptionAttribute($value)
     {
-        if(is_null($value))
-        {
-            $this->attributes['byline'] = '';
-        }
+        $this->attributes['description'] = is_null($value) ? '' : $value;
+    }
+
+    public function setFbPageID($value)
+    {
+        $this->attributes['fbPageID'] = is_null($value) ? '' : $value;
+    }
+
+    public function setFbPageToken($value)
+    {
+        $this->attributes['fbPageToken'] = is_null($value) ? '' : $value;
     }
 
     public function getFbPageTitleAttribute()
@@ -38,7 +42,18 @@ class Stream extends Model
         }
         $fb = app(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk::class);
         $fb->setDefaultAccessToken($fbPageToken);
-        $response = $fb->get('/' . $fbPageID);
+        try
+        {
+            $response = $fb->get('/' . $fbPageID);
+        }
+        catch(\Facebook\Exceptions\FacebookResponseException $e)
+        {
+            return 'Error: ' . $e->getMessage();
+        }
+        catch(\Facebook\Exceptions\FacebookSDKException $e)
+        {
+            return 'Error: ' . $e->getMessage();
+        }
         $node = $response->getGraphObject();
         return $node->getProperty('name');
     }

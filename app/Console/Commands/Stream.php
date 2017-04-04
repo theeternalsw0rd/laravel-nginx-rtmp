@@ -61,33 +61,40 @@ class Stream extends Command
                 try
                 {
                     $response = $this->fb->post('/' . $videoID, $streamData);
-                    $stream->fbStreamURL = '';
-                    $stream->save();
-                    return;
                 }
-                catch(Exception $e)
+                catch(\Facebook\Exceptions\FacebookResponseException $e)
                 {
                     return;
                 }
+                catch(\Facebook\Exceptions\FacebookSDKException $e)
+                {
+                    return;
+                }
+                $stream->fbStreamURL = '';
+                $stream->save();
                 $this->line($stream->fbStreamURL);
                 return;
             }
         }
         $title = empty($stream->title) ? 'placeholder title' : $stream->title;
-        $byline = empty($stream->byline) ? 'placeholder byline' : $stream->byline;
+        $description = empty($stream->description) ? 'placeholder description' : $stream->description;
         if(!empty($stream->fbStreamURL)) {
             $this->line($stream->fbStreamURL);
             return;
         }
         $streamData = [
             'title' => $title,
-            'description' => $byline
+            'description' => $title . ': ' . $description
         ];
         try
         {
             $response = $this->fb->post('/' . $stream->fbPageID . '/live_videos', $streamData, $stream->fbPageToken)->getGraphNode();
         }
-        catch(Exception $e)
+        catch(\Facebook\Exceptions\FacebookResponseException $e)
+        {
+            return;
+        }
+        catch(\Facebook\Exceptions\FacebookSDKException $e)
         {
             return;
         }

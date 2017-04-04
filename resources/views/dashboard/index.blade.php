@@ -1,6 +1,15 @@
 @extends('layouts.master')
 @section('content')
 	<h1>Streams</h1>
+	@if (count($errors) > 0)
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
 	<ul class="collection">
 		@foreach($streams as $stream)
 			<li class="item">
@@ -10,10 +19,10 @@
 				@else
 					<p>Title: {{ $stream->title }}</p>
 				@endif
-				@if(empty($stream->byline))
-					<p>Byline: Placeholder byline</p>
+				@if(empty($stream->description))
+					<p>Description: Placeholder description</p>
 				@else
-					<p>Byline: {{ $stream->byline }}</p>
+					<p>Description: {{ $stream->description}}</p>
 				@endif
 				@if(!empty($stream->fbPageTitle))
 					<p>Facebook Page to Stream to: {{ $stream->fbPageTitle }}</p>

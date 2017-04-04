@@ -31,13 +31,22 @@
 			<label for="title">Title</label>
 			<input type="text" name="title" value="{{ old('title', $streamTitle) }}" />
 		</div>
-		<div>
-			<label for="byline">Byline</label>
-			<input type="text" name="byline" value="{{ old('byline', $byline) }}" />
+		<div class="textarea">
+			<label for="description">Description</label>
+			<textarea name="description">{{ old('description', $description) }}</textarea>
 		</div>
 		<div>
 			<input type="submit" />
 		</div>
 	</form>
 @stop
-
+@section('localStyles')
+<style>
+	div.textarea {
+		display:flex;
+	}
+	div.textarea label {
+		margin-right: 10px;
+	}
+</style>
+@stop

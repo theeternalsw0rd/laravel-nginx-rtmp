@@ -23,12 +23,12 @@ class Stream extends Model
         $this->attributes['description'] = is_null($value) ? '' : $value;
     }
 
-    public function setFbPageID($value)
+    public function setFbPageIDAttribute($value)
     {
         $this->attributes['fbPageID'] = is_null($value) ? '' : $value;
     }
 
-    public function setFbPageToken($value)
+    public function setFbPageTokenAttribute($value)
     {
         $this->attributes['fbPageToken'] = is_null($value) ? '' : $value;
     }

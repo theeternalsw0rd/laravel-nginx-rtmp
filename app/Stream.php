@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stream extends Model
 {
-    protected $appends = array('fbPageTitle');
+    protected $appends = array('fbPageTitle', 'live');
+    protected $hidden = array('fbPageID', 'fbPageToken', 'fbStreamURL', 'key');
 
     public function trackers()
     {
@@ -56,6 +57,11 @@ class Stream extends Model
         }
         $node = $response->getGraphObject();
         return $node->getProperty('name');
+    }
+
+    public function getLiveAttribute()
+    {
+        return file_exists("/HLS/live/" . $this->slug . ".log") && file_exists("/HLS/live/" . $this->slug . ".m3u8");
     }
 }
 

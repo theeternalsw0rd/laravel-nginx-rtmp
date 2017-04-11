@@ -33,15 +33,9 @@ class StreamController extends BaseController
             ]);
             $validator->after(function($validator) use($slug)
             {
-                if(count($validator->errors()) > 0)
+                if($slug == 'create')
                 {
-                    foreach($validator->errors()->messages() as $field => $errors)
-                    {
-                        if($field == 'name')
-                        {
-                            return;
-                        }
-                    }
+                    $validator->errors()->add('keyword', 'The name you have provided may be a unique stream name but "create" is a reserved keyword.');
                 }
                 $streams = Stream::where('slug', '=', $slug)->get();
                 if($streams->count() > 0)
@@ -92,8 +86,12 @@ class StreamController extends BaseController
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255|unique:streams,id,' . $id
             ]);
-            $validator->after(function($validator) use($name, $stream, $slug, $id)
+            $validator->after(function($validator) use($slug, $id)
             {
+                if($slug == 'create')
+                {
+                    $validator->errors()->add('keyword', 'The name you have provided may be a unique stream name but "create" is a reserved keyword.');
+                }
                 $streams = Stream::where('slug', '=', $slug)->get();
                 if($streams->count() > 0)
                 {

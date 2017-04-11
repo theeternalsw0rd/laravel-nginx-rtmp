@@ -17,6 +17,16 @@ class PlayerController extends BaseController
         return view('player', ['stream' => $stream]);
     }
 
+    public function info(Request $request, $streamName)
+    {
+        $stream = Stream::where('slug', '=', $streamName)->get();
+        if($stream->count() < 1) {
+            return response()->json(['error' => true, 'errorCode' => 404], 404);
+        }
+        $stream = $stream[0];
+        return response()->json(['error' => false, 'data' => $stream]);
+    }
+
     public function tracker(Request $request, $streamName, $playbackToken)
     {
         $stream = Stream::where('slug', '=', $streamName)->firstOrFail();

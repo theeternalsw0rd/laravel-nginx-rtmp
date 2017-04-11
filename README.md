@@ -1,5 +1,8 @@
-Install nginx and nginx-rtmp. Tested using nginx-1.11.3 and nginx-rtmp from https://github.com/arut/nginx-rtmp-module.git master branch commit 5150993accb5edefa61d71e1c81ad8c02f515428.
-Use nginx.conf included from this repository, updating paths and domains as necessary.
+This is built on top of Laravel 5.4 and requires nginx, nginx-rtmp module, redis, php7, composer, and ffmpeg.
+
+Install nginx and nginx-rtmp using the build documentation at https://github.com/arut/nginx-rtmp-module. Tested using nginx-1.11.3 and nginx-rtmp master branch commit 5150993accb5edefa61d71e1c81ad8c02f515428.
+
+Use nginx.conf included from this repository to get you up and running quickly, updating paths and domains as necessary.
 
 Install ffmpeg and ensure ffmpeg is in the system path. Any ffmpeg with aac and x264 codec support and rtmp support should work.
 Tested with the following version and build config:
@@ -9,9 +12,10 @@ ffmpeg version 3.2.4 Copyright (c) 2000-2017 the FFmpeg developers
   configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-avisynth --enable-avresample --enable-fontconfig --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libass --enable-libbluray --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libiec61883 --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-libschroedinger --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-netcdf --enable-shared --enable-version3 --enable-x11grab
 ```
 
-Run composer install from within this repository to build the vendor directory.
+Install composer https://getcomposer.org/.
 
-This is built on top of Laravel 5.4.
+Run `composer install` from within this repository to build the vendor directory.
+
 You will need to create a .env file in the root of this repository (this file is ignored by git to protect the info within).
 
 For database, you will need the following:

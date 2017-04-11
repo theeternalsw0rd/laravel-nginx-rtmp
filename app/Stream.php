@@ -61,7 +61,7 @@ class Stream extends Model
 
     public function getLiveAttribute()
     {
-        return file_exists("/HLS/live/" . $this->slug . ".log") && file_exists("/HLS/live/" . $this->slug . ".m3u8");
+        return file_exists("/HLS/live/" . $this->slug . ".running") && file_exists("/HLS/live/" . $this->slug . ".m3u8");
     }
 }
 

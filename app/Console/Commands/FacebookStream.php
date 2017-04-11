@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Stream extends Command
+class FacebookStream extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-     protected $signature = 'stream:facebook {stream} {--stop}';
+     protected $signature = 'stream:facebook {slug} {--stop}';
 
     /**
      * The console command description.
@@ -40,7 +40,7 @@ class Stream extends Command
     {
         try
         {
-            $stream = \App\Stream::where('slug', '=', $this->argument('stream'))->firstOrFail();
+            $stream = \App\Stream::where('slug', '=', $this->argument('slug'))->firstOrFail();
         }
         catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
         {

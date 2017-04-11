@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Stream::class,
-        Commands\Facebook::class
+        Commands\FacebookStream::class,
+        Commands\TranscodeStream::class
     ];
 
     /**

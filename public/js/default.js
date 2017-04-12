@@ -243,8 +243,6 @@ if(Hls.isSupported()) {
 			xhr.send();
 			previousTime = currentTime;
 		}
-		if(video.duration - currentTime < 1) {
-		}
 	});
 	video.addEventListener('click', function(e) {
 		if(video.paused) {

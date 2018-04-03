@@ -1,3 +1,5 @@
+I'm no longer developing this. In practice, my VPS got rate limited. This sort of project would work better in a VPS with GPU hardware accelerated h264 encoding or on bare metal where a modern integrated GPU should suffice.
+
 This is built on top of Laravel 5.4 and requires nginx, nginx-rtmp module, redis, php7, composer, and ffmpeg.
 
 Install nginx and nginx-rtmp using the build documentation at https://github.com/arut/nginx-rtmp-module. Tested using nginx-1.11.3 and nginx-rtmp master branch commit 5150993accb5edefa61d71e1c81ad8c02f515428.
